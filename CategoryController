@@ -1,0 +1,50 @@
+package main;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/categories")
+public class CategoryController {
+
+    private final CategoryService categoryService;
+
+    @Autowired
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @PostMapping
+    public Category createCategory(@RequestBody Category category) {
+        return categoryService.createCategory(category);
+    }
+
+    @GetMapping
+    public List<Category> getAllCategories() {
+        return categoryService.getAllCategories();
+    }
+
+    @GetMapping("/{id}")
+    public Category getCategoryById(@PathVariable Integer id) {
+        Category category = categoryService.getCategoryById(id);
+        if (category != null) {
+            return category;
+        }
+        return null;
+    }
+
+    @PutMapping("/{id}")
+    public Category updateCategory(@PathVariable Integer id, @RequestBody Category category) {
+        Category updatedCategory = categoryService.updateCategory(id, category);
+        if (updatedCategory != null) {
+            return updatedCategory;
+        }
+        return null;
+    }
+    @DeleteMapping("/{id}")
+    public boolean deleteCategory(@PathVariable Integer id) {
+        return categoryService.deleteCategory(id);
+    }
+}
